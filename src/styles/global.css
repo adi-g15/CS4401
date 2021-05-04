@@ -9,7 +9,7 @@ body {
     margin-left: 10%;
     width: 80%;
     margin-bottom: 5vh;
-    font-size: 20px;
+    font-size: 1.4rem;
     font-style: italic;
     word-spacing: 2px;
 }
@@ -50,6 +50,9 @@ input, select {
 }
 
 @media screen and (max-width: 768px) and (orientation: portrait) {
+    .msg_removed {
+        font-size: 1.1rem;
+    }
     input, select {
         width: 27vw;
         margin-left: 0;
