@@ -1,5 +1,10 @@
 # Decrypted Lecture Notes
 
+# **CHECK THE `main` BRANCH FOR LATEST CODE**
+
+This branch doesn't have the files supported
+
+
 For the NITP 2k19-23 batch.
 
 Provides decrypted lecture notes, download and read, no need to always enter password.

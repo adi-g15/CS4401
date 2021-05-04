@@ -6,20 +6,20 @@ import {GetListService} from "../services/files";
 import "../styles/global.css";
 import UnitZip from "../components/unitzip";
 
-import firebase from "firebase/app";
-import firebaseConfig from "../config/firebase";
-import "firebase/storage";
+// import firebase from "firebase/app";
+// import firebaseConfig from "../config/firebase";
+// import "firebase/storage";
 import dayjs from "dayjs";
 import Helmet from "react-helmet";
 
-try{
-	firebase.initializeApp(firebaseConfig);
-} catch(err) {
-	console.error(err.msg || "Error");
-}
+// try{
+// 	firebase.initializeApp(firebaseConfig);
+// } catch(err) {
+// 	console.error(err.msg || "Error");
+// }
 
-const storage = firebase.storage();
-const storageRef = storage.ref();
+// const storage = firebase.storage();
+// const storageRef = storage.ref();
 
 /**
  * This is the main page when you open https://cs4401.netlify.app
@@ -54,18 +54,18 @@ export default function CS4401() {
 		files.sort((a,b) => a.name === b.name ? 0: (a.name < b.name ? 1:-1 ));
 
 	useEffect(() => {
-		GetListService(storageRef.child("cs4401/")).then(data => {
-			const all_zip = data.zipped.find(zip => !zip.name.startsWith('Unit'));
-			setZip(all_zip);
+		// GetListService(storageRef.child("cs4401/")).then(data => {
+		// 	const all_zip = data.zipped.find(zip => !zip.name.startsWith('Unit'));
+		// 	setZip(all_zip);
 
-			all_zip.meta.then(meta => {
-				console.debug("List Updated: ", meta.updated);
-				setUpdatedTime( dayjs(meta.updated).format('DD MMM YYYY') );
-			});
+		// 	all_zip.meta.then(meta => {
+		// 		console.debug("List Updated: ", meta.updated);
+		// 		setUpdatedTime( dayjs(meta.updated).format('DD MMM YYYY') );
+		// 	});
 
-			setUnitZips(data.zipped.filter(zip => zip.name.startsWith('Unit')));
-			setFiles(data.storedFiles);
-		})
+		// 	setUnitZips(data.zipped.filter(zip => zip.name.startsWith('Unit')));
+		// 	setFiles(data.storedFiles);
+		// })
 	}, []);
 
 	// <></> is a react fragement
@@ -89,47 +89,12 @@ export default function CS4401() {
 			<hr className="separation" />
 			<br />
 			<div className="container">
-				<div className="unit_container">
-					{
-						/** 
-						 * if allZip is not null, ie. there is a "All Lectures.zip",
-						 * we set its gridWidth to use 2 columns, this is why it looks bigger
-						 * For more information, ye padho - https://devdocs.io/css/grid-column-start
-						 * 
-						 * Then the unitZips.map call creates different buttons (`UnitZip` component)
-						 * for each Unit-I, Unit-II, ... zip files
-						*/
-						[( allZip && <UnitZip key={0} gridWidth={[1,3]} name={"Download All as ZIP"} linkPromise={allZip.link} metaPromise={allZip.meta} />)]
-							.concat(unitZips.map((zip, index) => (
-								<UnitZip key={index+1} name={zip.name} linkPromise={zip.link} metaPromise={zip.meta} />
-							)))
-					}
+				<div className="msg_removed">
+                    Sorry Mitro, lekin sir ne private kar diya hai files ko, isliye yaha publicly nahi share kar raha ab
+                    <br /><br />
+                    Saara pdf hai abhi bhi, bas publicly nhi share kar sakta aise, mereko message(aditya gupta) kardena ya mail (ag15035@gmail.com) <span style={{fontStyle: "normal"}}>🙂</span>
 				</div>
 
-				<table>
-					<thead>
-						<tr>
-							{selectOn && (<td>Select</td>)}
-							<td style={{cursor: 'pointer'}} onClick={() => ascendingOrder === null ? setAscendingOrder(false): setAscendingOrder(order => !order) }>
-								<span>Name</span>
-								<span style={{paddingLeft: '15px'}}>{ascendingOrder ? '👇': '👆'}</span>
-							</td>
-							<td>Size</td>
-						</tr>
-					</thead>
-					<tbody>
-					{files.map((value, index) => (
-						<PDFDown
-							name={value.name}
-							linkPromise={value.link}
-							metaPromise={value.meta}
-							key={index}
-							selectOn={selectOn}
-						/>
-					)
-					)}
-					</tbody>
-				</table>
 			</div>
 			<Footer msg={`Updated: ${updated_time}`}/>
 		</>
